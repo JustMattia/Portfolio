@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mattia Santo Moltisanti — 3D Artist</title>
+  <meta name="description"
+    content="Portfolio di Mattia Santo Moltisanti, 3D Artist: modellazione, hard surface, scultura, rendering e stampa 3D con Blender.">
+  <meta property="og:title" content="Mattia Santo Moltisanti — 3D Artist">
+  <meta property="og:description" content="Mi piace trasformare le idee in modelli 3D.">
+  <meta property="og:image" content="assets/cuphead-scacchiera.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #141414;
+      --bg2: #1b1b1b;
+      --red: #b5321f;
+      --red-l: #d9472f;
+      --text: #e8e8e8;
+      --muted: #a8a8a8;
+      --pad: clamp(20px, 4vw, 56px);
+      color-scheme: dark
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 72px
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font: 300 clamp(16px, 1.15vw, 18px)/1.55 'Archivo', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased
+    }
+
+    img,
+    video {
+      display: block;
+      max-width: 100%
+    }
+
+    a {
+      color: inherit
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--red-l);
+      outline-offset: 3px
+    }
+
+    .display {
+      font-family: 'Archivo Black', 'Arial Black', Impact, sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      line-height: .92;
+      letter-spacing: .005em
+    }
+
+    .red {
+      color: var(--red)
+    }
+
+    .label {
+      color: var(--red);
+      font-size: .9rem;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      margin-bottom: clamp(14px, 2vw, 26px)
+    }
+
+    .sub {
+      font-family: 'Archivo Black', 'Arial Black', sans-serif;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-size: .82rem;
+      margin-bottom: 10px
+    }
+
+    .tags {
+      font-family: 'Archivo Black', 'Arial Black', sans-serif;
+      text-transform: uppercase;
+      font-size: .78rem;
+      letter-spacing: .03em;
+      color: #fff;
+      margin-top: 22px
+    }
+
+    section,
+    header,
+    footer {
+      padding-inline: var(--pad)
+    }
+
+    .wrap {
+      max-width: 1360px;
+      margin-inline: auto
+    }
+
+    /* top bar */
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(20, 20, 20, .88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding-block: 14px
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #fff;
+      border-radius: 99px;
+      padding: 6px 14px;
+      font-family: 'Archivo Black', sans-serif;
+      font-size: .8rem;
+      text-decoration: none;
+      white-space: nowrap
+    }
+
+    .pill::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--red-l)
+    }
+
+    .name {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 1rem
+    }
+
+    .top nav {
+      display: flex;
+      gap: 22px;
+      font-size: .9rem
+    }
+
+    .top nav a {
+      text-decoration: none;
+      color: var(--muted)
+    }
+
+    .top nav a:hover {
+      color: #fff
+    }
+
+    @media(max-width:820px) {
+      .top nav {
+        display: none
+      }
+    }
+
+    /* hero */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding-top: clamp(30px, 6vw, 90px);
+      text-align: center;
+      background: radial-gradient(ellipse 40% 45% at 50% 70%, #2a1c1c 0%, transparent 70%)
+    }
+
+    .hero h1 {
+      font-size: clamp(3.4rem, 17.5vw, 17rem);
+      color: #fff;
+      position: relative;
+      z-index: 1
+    }
+
+    .hero img {
+      width: min(78%, 1040px);
+      margin: clamp(-8vw, -4vw, -30px) auto 0;
+      position: relative;
+      z-index: 2;
+      animation: rise 1.1s cubic-bezier(.2, .7, .2, 1) both
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(40px)
+      }
+    }
+
+    /* about */
+    .about {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 0;
+      padding: 0;
+      min-height: 80vh;
+      align-items: stretch
+    }
+
+    .about .txt {
+      padding: clamp(40px, 6vw, 90px) var(--pad);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 48px;
+      background: linear-gradient(90deg, #241615 0, transparent 30%)
+    }
+
+    .about h2 {
+      font-size: clamp(2.6rem, 6vw, 5.4rem);
+      margin-bottom: clamp(28px, 5vw, 70px)
+    }
+
+    .about .lead {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+      line-height: 1.15;
+      color: #fff;
+      max-width: 20em;
+      margin-bottom: 18px
+    }
+
+    .about p {
+      color: var(--muted);
+      max-width: 34em
+    }
+
+    .cols {
+      display: flex;
+      gap: clamp(30px, 6vw, 90px);
+      flex-wrap: wrap
+    }
+
+    .cols h3 {
+      font-family: 'Archivo Black', sans-serif;
+      color: var(--red);
+      font-size: .85rem;
+      letter-spacing: .14em;
+      margin-bottom: 12px;
+      font-weight: 400
+    }
+
+    .cols ul {
+      list-style: none;
+      padding: 0;
+      font-weight: 500
+    }
+
+    .cols li::before {
+      content: "— ";
+      color: var(--red)
+    }
+
+    .about .ph {
+      position: relative;
+      min-height: 420px
+    }
+
+    .about .ph img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 20%
+    }
+
+    .about .ph::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--bg) 0, transparent 35%)
+    }
+
+    @media(max-width:820px) {
+      .about {
+        grid-template-columns: 1fr
+      }
+
+      .about .ph {
+        order: -1;
+        min-height: 360px
+      }
+
+      .about .ph::after {
+        background: linear-gradient(0deg, var(--bg) 0, transparent 40%)
+      }
+    }
+
+    /* index */
+    .index {
+      padding-block: clamp(60px, 8vw, 120px)
+    }
+
+    .index h2,
+    .contact h2 {
+      font-size: clamp(2.4rem, 6vw, 5.4rem);
+      margin-bottom: clamp(28px, 4vw, 56px)
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 310px), 1fr));
+      gap: 22px
+    }
+
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      aspect-ratio: 4/5;
+      border-radius: 22px;
+      overflow: hidden;
+      text-decoration: none;
+      background: #000;
+      isolation: isolate
+    }
+
+    .card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      transition: transform .5s
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(0deg, #000 0, #000 28%, transparent 62%)
+    }
+
+    .card:hover img {
+      transform: scale(1.04)
+    }
+
+    .card div {
+      padding: 22px 24px 24px
+    }
+
+    .card h3 {
+      font-family: 'Archivo Black', sans-serif;
+      font-weight: 400;
+      font-size: 1.55rem;
+      line-height: 1.05;
+      color: #fff;
+      margin-bottom: 6px
+    }
+
+    .card small {
+      display: block;
+      color: var(--muted);
+      font-size: .78rem;
+      line-height: 1.4
+    }
+
+    .card b {
+      display: block;
+      margin-top: 10px;
+      font-family: 'Archivo Black', sans-serif;
+      font-weight: 400;
+      font-size: .8rem;
+      letter-spacing: .1em;
+      color: var(--red);
+      text-transform: uppercase
+    }
+
+    /* project */
+    .proj {
+      padding-block: clamp(56px, 8vw, 120px);
+      border-top: 1px solid #262626
+    }
+
+    .proj h2 {
+      font-size: clamp(2.8rem, 7vw, 6.6rem);
+      color: #fff;
+      margin-bottom: clamp(18px, 2vw, 30px)
+    }
+
+    .proj h2 em {
+      font-style: normal;
+      color: var(--red);
+      display: block
+    }
+
+    .proj .intro {
+      max-width: 36em;
+      color: #d4d4d4
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+      gap: clamp(28px, 5vw, 80px);
+      align-items: center
+    }
+
+    .split.flip {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr)
+    }
+
+    .split.flip>:first-child {
+      order: 2
+    }
+
+    @media(max-width:900px) {
+
+      .split,
+      .split.flip {
+        grid-template-columns: 1fr
+      }
+
+      .split.flip>:first-child {
+        order: 0
+      }
+    }
+
+    .shot {
+      border-radius: 18px;
+      overflow: hidden;
+      background: #000;
+      cursor: zoom-in;
+      width: 100%
+    }
+
+    .shot img,
+    .shot video {
+      width: 100%;
+      height: auto
+    }
+
+    .shot.nz {
+      cursor: default
+    }
+
+    figure figcaption,
+    .cap {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-top: 10px
+    }
+
+    .brief {
+      display: grid;
+      grid-template-columns: minmax(160px, .7fr) 1.6fr;
+      gap: clamp(24px, 5vw, 72px);
+      margin-top: clamp(40px, 5vw, 72px)
+    }
+
+    .brief h3 {
+      font-family: 'Archivo Black', sans-serif;
+      font-weight: 400;
+      color: var(--red);
+      letter-spacing: .14em;
+      font-size: .9rem;
+      margin-bottom: 10px;
+      text-transform: uppercase
+    }
+
+    .brief p {
+      font-weight: 500;
+      color: #e3e3e3;
+      font-size: 1.05em;
+      line-height: 1.35
+    }
+
+    @media(max-width:700px) {
+      .brief {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .row {
+      display: grid;
+      gap: 18px;
+      margin-top: clamp(28px, 4vw, 56px)
+    }
+
+    .row.c3 {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr))
+    }
+
+    .row.kings {
+      grid-template-columns: repeat(2, minmax(0, 170px));
+      align-items: end
+    }
+
+    .stage {
+      background: radial-gradient(ellipse at 50% 55%, #2a1d1d, transparent 70%);
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 2%;
+      padding: 10px
+    }
+
+    .cut {
+      cursor: zoom-in
+    }
+
+    .white {
+      background: #fff
+    }
+
+    .tall {
+      max-width: 560px
+    }
+
+    /* contact */
+    .contact {
+      padding-block: clamp(60px, 8vw, 120px);
+      border-top: 1px solid #262626;
+      overflow: hidden
+    }
+
+    .contact .split {
+      align-items: end
+    }
+
+    dl {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px clamp(24px, 5vw, 70px);
+      margin-top: clamp(30px, 6vw, 80px)
+    }
+
+    dt {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: .85rem;
+      letter-spacing: .14em;
+      color: var(--red);
+      text-transform: uppercase;
+      padding-top: .2em
+    }
+
+    dd {
+      font-weight: 500;
+      font-size: 1.05rem;
+      word-break: break-word
+    }
+
+    dd a {
+      text-decoration: none;
+      border-bottom: 1px solid #444
+    }
+
+    dd a:hover {
+      border-color: var(--red-l)
+    }
+
+    .pair {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      margin-bottom: -6px
+    }
+
+    .pair img {
+      width: min(46%, 260px);
+      height: auto
+    }
+
+    .pair img+img {
+      margin-left: -6%
+    }
+
+    footer {
+      padding-block: 28px;
+      color: #777;
+      font-size: .8rem;
+      border-top: 1px solid #262626
+    }
+
+    dialog {
+      border: 0;
+      background: rgba(10, 10, 10, .96);
+      width: 100vw;
+      height: 100vh;
+      max-width: none;
+      max-height: none;
+      padding: 3vw;
+      color: #fff
+    }
+
+    dialog::backdrop {
+      background: #000
+    }
+
+    dialog img {
+      max-width: 100%;
+      max-height: 100%;
+      margin: auto;
+      position: absolute;
+      inset: 0;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      padding: 3vw
+    }
+
+    dialog button {
+      position: fixed;
+      top: 14px;
+      right: 18px;
+      z-index: 2;
+      background: none;
+      border: 1px solid #fff;
+      color: #fff;
+      border-radius: 99px;
+      padding: 6px 16px;
+      font: inherit;
+      cursor: pointer
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      html {
+        scroll-behavior: auto
+      }
+
+      .hero img {
+        animation: none
+      }
+
+      .card img {
+        transition: none
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="top">
+    <a class="pill" href="#top">3D ARTIST</a>
+    <nav aria-label="Sezioni"><a href="#chi-sono">Chi sono</a><a href="#progetti">Progetti</a><a
+        href="#contatti">Contatti</a></nav>
+    <span class="name">Mattia Santo Moltisanti</span>
+  </div>
+
+  <header class="hero" id="top">
+    <h1 class="display">Portfolio</h1>
+    <img src="assets/hero-pezzi.webp" width="1500" height="704"
+      alt="Pezzi degli scacchi a tema Cuphead, modellati in 3D">
+  </header>
+
+  <section class="about" id="chi-sono">
+    <div class="txt">
+      <div>
+        <div class="label">— Chi sono</div>
+        <h2 class="display">About <span class="red">me</span></h2>
+        <p class="lead">Ciao, sono <span class="red">Mattia</span> e mi piace trasformare le idee in <span
+            class="red">modelli 3D</span>.</p>
+        <p>Sono un 3D Artist, al momento autodidatta, mi piace sperimentare, partendo dall’Hard Surface fino alla
+          Scultura. Spesso stampo in 3D e dipingo le mie creazioni. Mi piace il momento in cui un oggetto smette di
+          essere solo un file e diventa reale.</p>
+      </div>
+      <div class="cols">
+        <div>
+          <h3>Competenze</h3>
+          <ul>
+            <li>Modellazione &amp; Hard Surface</li>
+            <li>Texturing</li>
+            <li>Lightning &amp; Rendering</li>
+            <li>Rigging &amp; Animation</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Software</h3>
+          <ul>
+            <li>Blender</li>
+            <li>After Effects</li>
+            <li>Photoshop</li>
+            <li>Figma</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="ph"><img src="assets/mattia.webp" width="900" height="1030" alt="Ritratto di Mattia" loading="lazy">
+    </div>
+  </section>
+
+  <section class="index" id="progetti">
+    <div class="wrap">
+      <div class="label">— Progetti</div>
+      <h2 class="display">Indice dei <span class="red">progetti</span></h2>
+      <div class="cards">
+        <a class="card" href="#cuphead"><img src="assets/cuphead-card.webp" alt="" loading="lazy">
+          <div>
+            <h3>Cuphead Chess Set</h3><small>Modellazione &amp; rendering 3D • Set di Scacchi a tema Cuphead •
+              Blender</small><b>Progetto 01</b>
+          </div>
+        </a>
+        <a class="card" href="#dead-orbit"><img src="assets/deadorbit-card.webp" alt="" loading="lazy">
+          <div>
+            <h3>Dead Orbit</h3><small>Cortometraggio • Modello 3D + Compositing 2D • Blender &amp; After
+              Effects</small><b>Progetto 02</b>
+          </div>
+        </a>
+        <a class="card" href="#aculeo"><img src="assets/aculeo.webp" alt="" loading="lazy">
+          <div>
+            <h3>Aculeo Essenzialismo</h3><small>Arma di Destiny 2 • Blender • Stampa 3D</small><b>Progetto 03</b>
+          </div>
+        </a>
+        <a class="card" href="#museo"><img src="assets/museo-2.webp" alt="" loading="lazy">
+          <div>
+            <h3>Casa Museo del Nespolo</h3><small>Render per il Progetto Ologramma • Blender</small><b>Progetto 04</b>
+          </div>
+        </a>
+        <a class="card" href="#tayto"><img src="assets/tayto.webp" alt="" loading="lazy">
+          <div>
+            <h3>Tayto Potato</h3><small>Figure ricreata su Blender</small><b>Progetto 05</b>
+          </div>
+        </a>
+        <a class="card" href="#trinacria"><img src="assets/trinacria.webp" alt="" loading="lazy">
+          <div>
+            <h3>Trinacria</h3><small>Dal gioco Mafia: The Old Country • Blender</small><b>Progetto 06</b>
+          </div>
+        </a>
+        <a class="card" href="#ditto"><img src="assets/ditto.webp" alt="" loading="lazy">
+          <div>
+            <h3>Ditto al Cinema!</h3><small>Scena realizzata interamente su Blender</small><b>Progetto 07</b>
+          </div>
+        </a>
+        <a class="card" href="#ghost"><img src="assets/ghost-poster.jpg" alt="" loading="lazy">
+          <div>
+            <h3>Ghost Turn Around</h3><small>Turn around 3D • Blender</small><b>Progetto 08</b>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 -->
+  <section class="proj" id="cuphead">
+    <div class="wrap">
+      <div class="label">— Progetto 01</div>
+      <div class="split">
+        <div>
+          <h2 class="display">Cuphead<em>Chess set</em></h2>
+          <p class="intro">Set di scacchi completo a tema Cuphead. Ogni pezzo è ispirato alle pedine della Rocca
+            dell’Arrocco del videogioco di Studio MDHR.<br>I pezzi sono modellati secondo le misure standard degli
+            scacchi, quindi una volta stampata in 3D, può essere utilizzata.</p>
+          <p class="tags">Character design • Modellazione 3D • Rendering • Stampa 3D</p>
+        </div>
+        <div class="shot"><img src="assets/cuphead-scacchiera.webp" width="1800" height="1554"
+            alt="Scacchiera Cuphead con pezzi bianchi e neri, carte e fiches su un tavolo di legno" data-zoom
+            loading="lazy"></div>
+      </div>
+      <div class="brief">
+        <div>
+          <h3>Obiettivo</h3>
+          <p>Creare una scacchiera a tema Cuphead.</p>
+        </div>
+        <div>
+          <h3>Processo</h3>
+          <p>Studio dei personaggi dagli Artbook.<br>Character design delle pedine su Blender.<br>Texturing e
+            Rendering.<br>Slicing con Cura e Stampa 3D.</p>
+        </div>
+      </div>
+      <div class="split flip" style="margin-top:clamp(36px,5vw,70px)">
+        <div class="shot"><img src="assets/cuphead-pezzi-rossi.webp" width="1800" height="778"
+            alt="Pezzi rossi e blu su scacchiera in marmo" data-zoom loading="lazy"></div>
+        <div>
+          <div class="row kings" style="margin-top:0">
+            <figure><img class="cut" src="assets/re-3d.webp" width="500" height="600"
+                alt="Modello 3D del Re degli Giochi in grigio" data-zoom loading="lazy">
+              <figcaption>Modello 3D del Re degli Giochi.</figcaption>
+            </figure>
+            <figure><img class="cut" src="assets/re-dipinto.webp" width="500" height="600"
+                alt="Re degli Giochi stampato in 3D e dipinto" data-zoom loading="lazy">
+              <figcaption>Modello 3D stampato e dipinto.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="proj" id="dead-orbit">
+    <div class="wrap">
+      <div class="label">— Progetto 02</div>
+      <div class="split">
+        <div>
+          <h2 class="display">Dead<em>Orbit</em></h2>
+          <p class="intro">Corto realizzato su Blender e After Effects, in cui sono stati utilizzati elementi 3D e 2D
+            per raccontare gli ultimi istanti di vita di un povero viaggiatore spaziale.</p>
+          <p class="tags">Modellazione 3D • Rendering • Compositing • Color correction</p>
+        </div>
+        <div class="shot nz"><video controls preload="metadata" playsinline poster="assets/dead-orbit-poster.jpg"
+            aria-label="Cortometraggio Dead Orbit">
+            <source src="assets/dead-orbit.mp4" type="video/mp4">
+          </video></div>
+      </div>
+      <div class="brief">
+        <div>
+          <h3>Obiettivo</h3>
+          <p>Fondere in modo coerente elementi 3D e 2D all’interno di una singola produzione.</p>
+        </div>
+        <div>
+          <h3>Processo</h3>
+          <p>Realizzazione del modello 3D della nave su Blender.<br>Compositing su After Effects di elementi 3D, 2D,
+            Mappe HDRI e Sound Effects.<br>Color Correction.</p>
+        </div>
+      </div>
+      <div class="row c3">
+        <figure>
+          <div class="shot"><img src="assets/do-1.webp" width="900" height="572"
+              alt="Interno della navicella con radar e HUD" data-zoom loading="lazy"></div>
+          <figcaption>Interno Navicella 3D + Compositing Radar e HUD.</figcaption>
+        </figure>
+        <figure>
+          <div class="shot"><img src="assets/do-2.webp" width="900" height="572" alt="Asteroide 2D con riflesso HDRI"
+              data-zoom loading="lazy"></div>
+          <figcaption>Compositing di elementi 2D + Riflesso mappa HDRI su vetro 3D.</figcaption>
+        </figure>
+        <figure>
+          <div class="shot"><img src="assets/do-3.webp" width="900" height="572"
+              alt="Navicella con scritta Critical Damage" data-zoom loading="lazy"></div>
+          <figcaption>Navicella 3D + Compositing Elementi 2D + Luci 3D After Effects.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="proj" id="aculeo">
+    <div class="wrap">
+      <div class="label">— Progetto 03</div>
+      <div class="split">
+        <div>
+          <h2 class="display">Aculeo<em>Essenzialismo</em></h2>
+          <p class="intro">Arma di Destiny 2 ricreata in Blender per poi stamparla in 3D.</p>
+          <p class="tags">Modellazione 3D • Hard surface • Stampa 3D</p>
+        </div>
+        <div class="shot"><img src="assets/aculeo.webp" width="1800" height="1013"
+            alt="Modello 3D di Aculeo Essenzialismo, pistola di Destiny 2" data-zoom loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="proj" id="museo">
+    <div class="wrap">
+      <div class="label">— Progetto 04</div>
+      <div class="split">
+        <div>
+          <h2 class="display">Casa Museo<em>del Nespolo</em></h2>
+          <p class="intro">Primi render per il Progetto Ologramma a Casa Museo del Nespolo.</p>
+          <p class="tags">Blender • Rendering</p>
+        </div>
+        <div class="shot"><img src="assets/museo-2.webp" width="1800" height="1013"
+            alt="Render 2: ologramma di uno scrittore in una teca cilindrica nella sala del museo" data-zoom
+            loading="lazy"></div>
+      </div>
+      <div class="row">
+        <figure>
+          <div class="shot"><img src="assets/museo-1.webp" width="1800" height="1013"
+              alt="Render 1: dettaglio della teca con luci e riflessi" data-zoom loading="lazy"></div>
+          <figcaption>Render 1 — Museo Casa del Nespolo.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="proj" id="tayto">
+    <div class="wrap">
+      <div class="label">— Progetto 05</div>
+      <div class="split flip">
+        <div class="shot tall"><img src="assets/tayto.webp" width="1400" height="1400"
+            alt="Tayto Potato seduta su un water mentre guarda lo smartphone" data-zoom loading="lazy"></div>
+        <div>
+          <h2 class="display">Tayto<em>Potato</em></h2>
+          <p class="intro">Figure di Tayto Potato ricreata su Blender.</p>
+          <p class="tags">Blender • Modellazione 3D</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="proj" id="trinacria">
+    <div class="wrap">
+      <div class="label">— Progetto 06</div>
+      <div class="split">
+        <div>
+          <h2 class="display">Trinacria</h2>
+          <p class="intro">Trinacria dal gioco Mafia: The Old Country. Realizzato su Blender.</p>
+          <p class="tags">Blender • Modellazione 3D</p>
+        </div>
+        <div class="shot white tall"><img src="assets/trinacria.webp" width="1400" height="1400"
+            alt="Trinacria nera in rilievo" data-zoom loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="proj" id="ditto">
+    <div class="wrap">
+      <div class="label">— Progetto 07</div>
+      <div class="split flip">
+        <div class="shot tall"><img src="assets/ditto.webp" width="1400" height="1954"
+            alt="Ditto travestito con cappello e giacca che prova a entrare in un cinema" data-zoom loading="lazy">
+        </div>
+        <div>
+          <h2 class="display">Ditto<em>al Cinema!</em></h2>
+          <p class="intro">Ditto che prova ad infiltrarsi all’interno di un cinema. Realizzato interamente su Blender.
+          </p>
+          <p class="tags">Blender • Modellazione 3D • Rendering</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="proj" id="ghost">
+    <div class="wrap">
+      <div class="label">— Progetto 08</div>
+      <div class="split">
+        <div>
+          <h2 class="display">Ghost<em>Turn Around</em></h2>
+          <p class="intro">Turn around del modello 3D di un Ghost di Destiny 2.</p>
+          <p class="tags">Blender • Modellazione 3D • Animazione</p>
+        </div>
+        <div class="shot nz tall"><video autoplay loop muted playsinline preload="metadata"
+            poster="assets/ghost-poster.jpg" aria-label="Turn around del Ghost in 3D">
+            <source src="assets/ghost-turnaround.mp4" type="video/mp4">
+          </video></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contatti">
+    <div class="wrap">
+      <div class="label">— Contatti</div>
+      <div class="split">
+        <div>
+          <h2 class="display">Lavoriamo<br><span class="red">insieme</span>.</h2>
+          <dl>
+            <dt>Email</dt>
+            <dd><a href="mailto:moltisanti.mattia@gmail.com">moltisanti.mattia@gmail.com</a></dd>
+            <dt>Telefono</dt>
+            <dd><a href="tel:+393406257020">+39 3406257020</a></dd>
+            <dt>Instagram</dt>
+            <dd><a href="https://www.instagram.com/justmattia_/" target="_blank" rel="noopener">@justmattia_</a></dd>
+            <dt>LinkedIn</dt>
+            <dd><a href="https://www.linkedin.com/in/justmattia" target="_blank" rel="noopener">justmattia</a></dd>
+          </dl>
+        </div>
+        <div class="pair"><img src="assets/pezzo-cavallo.webp" width="500" height="810" alt="" loading="lazy"><img
+            src="assets/pezzo-regina.webp" width="500" height="810" alt="" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">© Mattia Santo Moltisanti — 3D Artist</div>
+  </footer>
+
+  <dialog id="lb" aria-label="Immagine ingrandita"><button type="button" aria-label="Chiudi">Chiudi</button><img alt="">
+  </dialog>
+  <script>
+    (function () {
+      var d = document.getElementById('lb'), im = d.querySelector('img');
+      if (!d.showModal) return;
+      document.addEventListener('click', function (e) {
+        var t = e.target.closest('[data-zoom]');
+        if (t) { im.src = t.currentSrc || t.src; im.alt = t.alt; d.showModal(); }
+        else if (e.target === d || e.target === im || e.target.tagName === 'BUTTON' && d.contains(e.target)) d.close();
+      });
+    })();
+  </script>
+</body>
+
+</html>
